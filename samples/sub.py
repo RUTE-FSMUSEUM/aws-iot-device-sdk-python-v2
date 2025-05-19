@@ -20,9 +20,6 @@ from utils.command_line_utils import CommandLineUtils
 # See the Utils/CommandLineUtils for more information.
 cmdData = CommandLineUtils.parse_sample_input_pubsub()
 
-#received_count = 0
-received_all_event = threading.Event()
-
 # Callback when connection is accidentally lost.
 def on_connection_interrupted(connection, error, **kwargs):
     print("Connection interrupted. error: {}".format(error))
@@ -53,10 +50,6 @@ def on_resubscribe_complete(resubscribe_future):
 # Callback when the subscribed topic receives a message
 def on_message_received(topic, payload, dup, qos, retain, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))
-    #global received_count
-    #received_count += 1
-    #if received_count == cmdData.input_count:
-    #    received_all_event.set()
 
 # Callback when the connection successfully connects
 def on_connection_success(connection, callback_data):
@@ -107,7 +100,6 @@ if __name__ == '__main__':
     connect_future.result()
     print("Connected!")
 
-    message_count = 0 # Force sending messages until program killed #cmdData.input_count
     message_topic = cmdData.input_topic
     message_string = cmdData.input_message
 
@@ -125,36 +117,12 @@ if __name__ == '__main__':
     # This step is skipped if message is blank.
     # This step loops forever if count was set to 0.
     if message_string:
-        if message_count == 0:
-            print("Sending messages until program killed")
-        else:
-            print("Sending {} message(s)".format(message_count))
-
+        print("Receiving messages until program killed")
         try:
             while True:
-                received_all_event.wait()
                 time.sleep(1)
         except KeyboardInterrupt:
-            received_all_event.set()
-
-        """
-        publish_count = 1
-        while (publish_count <= message_count) or (message_count == 0):
-            message = "{} [{}]".format(message_string, publish_count)
-            print("Publishing message to topic '{}': {}".format(message_topic, message))
-            message_json = json.dumps(message)
-            mqtt_connection.publish(
-                topic=message_topic,
-                payload=message_json,
-                qos=mqtt.QoS.AT_LEAST_ONCE)
-            time.sleep(1)
-            publish_count += 1
-        """
-
-    # Wait for all messages to be received.
-    # This waits forever if count was set to 0.
-    if not received_all_event.is_set():
-        print("Waiting for all messages to be received...")
+            pass
 
     # Disconnect
     print("Disconnecting...")
