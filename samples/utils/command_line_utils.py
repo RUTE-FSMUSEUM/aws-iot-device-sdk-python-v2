@@ -203,6 +203,7 @@ class CommandLineUtils:
     m_cmd_proxy_port = "proxy_port"
     m_cmd_message = "message"
     m_cmd_topic = "topic"
+    m_cmd_verbosity = "verbosity"
     m_cmd_port = "port"
     m_cmd_client_id = "client_id"
     m_cmd_is_ci = "is_ci"
