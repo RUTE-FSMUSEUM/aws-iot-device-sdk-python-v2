@@ -74,6 +74,65 @@ class CommandLineUtils:
             io.init_logging(getattr(io.LogLevel, self.parsed_commands.verbosity), 'stderr')
 
         return self.parsed_commands
+    
+    def add_common_mqtt_commands(self):
+        self.register_command(
+            CommandLineUtils.m_cmd_endpoint,
+            "<str>",
+            "The endpoint of the mqtt server not including a port.",
+            True,
+            str)
+        self.register_command(
+            CommandLineUtils.m_cmd_ca_file,
+            "<path>",
+            "Path to AmazonRootCA1.pem (optional, system trust store used by default)",
+            False,
+            str)
+        self.register_command(
+            CommandLineUtils.m_cmd_is_ci,
+            "<str>",
+            "If present the sample will run in CI mode (optional, default='None')",
+            False,
+            str)
+        
+    def add_common_proxy_commands(self):
+        self.register_command(
+            CommandLineUtils.m_cmd_proxy_host,
+            "<str>",
+            "Host name of the proxy server to connect through (optional)",
+            False,
+            str)
+        self.register_command(
+            CommandLineUtils.m_cmd_proxy_port,
+            "<int>",
+            "Port of the http proxy to use (optional, default='8080')",
+            type=int,
+            default=8080)
+
+    def add_common_topic_message_commands(self):
+        self.register_command(
+            CommandLineUtils.m_cmd_topic,
+            "<str>",
+            "Topic to publish, subscribe to (optional, default='test/topic').",
+            default="test/topic")
+        self.register_command(
+            CommandLineUtils.m_cmd_message,
+            "<str>",
+            "The message to send in the payload (optional, default='Hello World!').",
+            default="Hello World! ")
+
+    def add_common_logging_commands(self):
+        self.register_command(
+            CommandLineUtils.m_cmd_verbosity,
+            "<Log Level>",
+            "Logging level.",
+            default=io.LogLevel.NoLogs.name,
+            choices=[
+                x.name for x in io.LogLevel])
+
+    def add_common_key_cert_commands(self):
+        self.register_command(CommandLineUtils.m_cmd_key_file, "<path>", "Path to your key in PEM format.", True, str)
+        self.register_command(CommandLineUtils.m_cmd_cert_file, "<path>", "Path to your client certificate in PEM format.", True, str)
 
 
     ########################################################################
