@@ -175,7 +175,7 @@ class CommandLineUtils:
         cmdUtils.add_common_key_cert_commands()
         cmdUtils.register_command(CommandLineUtils.m_cmd_port, "<int>", "Connection port. AWS IoT supports 443 and 8883 (optional, default=8883).", type=int)
         cmdUtils.register_command(CommandLineUtils.m_cmd_client_id, "<str>", "Client ID to use for MQTT connection (optional, default='test-*').", default="test-" + str(uuid4()))
-        cmdUtils.register_command(CommandLineUtils.m_cmd_count, "<int>", "The number of messages to send (optional, default='10').", default=10, type=int)
+        cmdUtils.register_command(CommandLineUtils.m_cmd_count, "<int>", "The number of messages to send (optional, default='0').", default=0, type=int)
         cmdUtils.get_args()
 
         cmdData = CommandLineUtils.CmdData()
