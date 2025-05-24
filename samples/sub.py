@@ -66,13 +66,6 @@ def on_connection_closed(connection, callback_data):
     print("Connection closed")
 
 if __name__ == '__main__':
-    # Create the proxy options if the data is present in cmdData
-    proxy_options = None
-    if cmdData.input_proxy_host is not None and cmdData.input_proxy_port != 0:
-        proxy_options = http.HttpProxyOptions(
-            host_name=cmdData.input_proxy_host,
-            port=cmdData.input_proxy_port)
-
     # Create a MQTT connection from the command line data
     mqtt_connection = mqtt_connection_builder.mtls_from_path(
         endpoint=cmdData.input_endpoint,
@@ -85,7 +78,7 @@ if __name__ == '__main__':
         client_id=cmdData.input_clientId,
         clean_session=False,
         keep_alive_secs=30,
-        http_proxy_options=proxy_options,
+        http_proxy_options=None,
         on_connection_success=on_connection_success,
         on_connection_failure=on_connection_failure,
         on_connection_closed=on_connection_closed)
